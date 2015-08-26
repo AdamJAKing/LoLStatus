@@ -104,30 +104,28 @@ public class LoLConnector {
 		url = new URL("https://"+server.getRegion()+".api.pvp.net/api/lol/"+server.getRegion()+"/v1.3/stats/by-summoner/"+id+"/ranked?season=SEASON2015&api_key=" + JsonFileNames.API_KEY).openStream();
 		generateJson(rootObjectSummoner);
 		
-		// Tell the listener what changes should be made to the database
-		databaseListener.summonerEvent(new Summoner(username, id), SummonerEventType.INSERT);
-		
 		JSONArray jArray = rootObjectSummoner.get(0).getJSONArray("champions");
 		
+		int maxDeaths=0;
+		int maxChampionsKilled=0;
+		int totalChampionKills=0;;
+		
 		for(int i=0; i < jArray.length(); i++){
-			JSONObject jOb = (JSONObject) jArray.get(i);
-			
-			if(jOb.getInt("id") == 0){
-				// Getting the stats object for the player
-				JSONObject ob2 = jOb.getJSONObject("stats");
-				// Print out their max deaths from 1 game
-				System.out.println(ob2.getInt("maxNumDeaths"));
+			JSONObject jObject = (JSONObject) jArray.get(i);
+			if(jObject.getInt("id") == 0){
+				
+				JSONObject summonerObjectInfo = jObject.getJSONObject("stats");
+				
+				maxDeaths = summonerObjectInfo.getInt("maxNumDeaths");
+				maxChampionsKilled = summonerObjectInfo.getInt("maxChampionsKilled");
+				totalChampionKills = summonerObjectInfo.getInt("totalChampionKills");
 			}
 		}
-		
-		/*JSONArray jArray = rootObjectSummoner.get(0).getJSONArray("champions");
-		JSONObject jOb = (JSONObject) jArray.get(0);
-		System.out.println(id);
-		System.out.println(jOb.getInt("id"));*/
+		// Tell the listener what changes should be made to the database
+		databaseListener.summonerEvent(new Summoner(username, id, server.getRegion(), maxDeaths, totalChampionKills, maxChampionsKilled), SummonerEventType.INSERT);
 	}
 	
 	private void displayCurrentGameData() throws JSONException, MalformedURLException, IOException{
-		//TODO
 		JSONArray participants = rootObjects.get(0).getJSONArray("participants");
 
 		System.out.println("Participants:");

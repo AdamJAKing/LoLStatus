@@ -17,7 +17,8 @@ public class DatabaseHandler implements DatabaseListener{
 	public void summonerEvent(Summoner summoner, SummonerEventType summonerEvent) {
 		switch(summonerEvent){
 		case INSERT:
-			summonerDAO.addSummoner(summoner.getName(), summoner.getId());
+			summonerDAO.addSummoner(summoner.getName(), summoner.getId(), summoner.getServer(), summoner.getMaxDeaths(), summoner.getTotalChampionsKilled()
+					, summoner.getMaxChampionsKills());
 			break;
 		case UPDATE:
 			break;
