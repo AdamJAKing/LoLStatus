@@ -30,6 +30,8 @@ public class SummonerDAO {
 				myStm.setInt(paramIndex++, maxChampionKills);
 			
 				myStm.executeUpdate();
+				
+				deleteSummoner(id);
 			
 			} catch (SQLException e) {
 				e.printStackTrace();
@@ -49,6 +51,7 @@ public class SummonerDAO {
 			
 			ResultSet rs = myStm.executeQuery();
 			if(rs.next()){
+				System.out.println(rs.getString("id"));
 				return rs.getString("id");
 			}
 			
@@ -59,8 +62,24 @@ public class SummonerDAO {
 		return null;
 	}
 	
-	public void deleteSummoner(String name){
+	public void deleteSummoner(int id){
+		String user = getSummoner(id);
 		
+		if(user != null){
+			Connection connection = Database.getInstance().getConnection();
+			
+			try {
+				PreparedStatement myStm = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id=?");
+				myStm.setInt(1, id);
+				
+				myStm.executeUpdate();
+				System.out.println("User deleted");
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}else{
+			System.out.println("User doesn't exist");
+		}
 	}
 	
 	public void updateSummoner(){
