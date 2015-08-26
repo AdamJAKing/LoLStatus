@@ -30,15 +30,13 @@ public class SummonerDAO {
 				myStm.setInt(paramIndex++, maxChampionKills);
 			
 				myStm.executeUpdate();
-				
-				deleteSummoner(id);
 			
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}else{
 			// If the user is inside the database then we won't add it, and will display this message
-			System.out.println("Failed to add summoner to database '"+name+"' already exists");
+			System.out.println("\nFailed to add summoner to database '"+name+"' already exists");
 		}
 	}
 	
@@ -63,6 +61,7 @@ public class SummonerDAO {
 	}
 	
 	public void deleteSummoner(int id){
+		// Check if the user exists
 		String user = getSummoner(id);
 		
 		if(user != null){
@@ -70,15 +69,16 @@ public class SummonerDAO {
 			
 			try {
 				PreparedStatement myStm = connection.prepareStatement("DELETE FROM " + TABLE_NAME + " WHERE id=?");
+				// Insert the id into the statement
 				myStm.setInt(1, id);
 				
 				myStm.executeUpdate();
-				System.out.println("User deleted");
+				System.out.println("\nUser deleted");
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
 		}else{
-			System.out.println("User doesn't exist");
+			System.out.println("\nUser doesn't exist");
 		}
 	}
 	

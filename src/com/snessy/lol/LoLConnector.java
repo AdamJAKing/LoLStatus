@@ -101,6 +101,9 @@ public class LoLConnector {
 	}
 	
 	private void grabSummonerInfo(String username, int id, ServerInformation server) throws MalformedURLException, IOException, JSONException{
+		
+		// Clear the list of summoners as we only want the first index
+		rootObjectSummoner.clear();
 		url = new URL("https://"+server.getRegion()+".api.pvp.net/api/lol/"+server.getRegion()+"/v1.3/stats/by-summoner/"+id+"/ranked?season=SEASON2015&api_key=" + JsonFileNames.API_KEY).openStream();
 		generateJson(rootObjectSummoner);
 		
