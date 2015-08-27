@@ -15,4 +15,4 @@ Planned features
 
 Possible features
 * Champion information
-* Player search (non-live game version) - Ties in with match history
+* Player search (non-live game version) -- Ties in with match history
