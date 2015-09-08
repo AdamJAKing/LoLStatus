@@ -18,16 +18,17 @@ import com.snessy.lol.Summoner.SummonerEventType;
 
 public class LoLConnector {
 
-	public static final String SERVER_SLUGS[] = { "euw", "na", "eune", "tr",
+	public static final String SERVER_SLUGS[] = {"euw", "na", "eune", "tr",
 			"oce" };
 
 	private InputStream url;
 	private BufferedReader reader;
 	private ServerInformation regionToCheck;
-	// Arrays vs arraylist?
+	// Arrays or arraylist?
 	private ArrayList<JSONObject> rootObjects;
 	private ArrayList<JSONObject> rootObjectsBannedChampions;
 	private ArrayList<JSONObject> rootObjectSummoner;
+	private ArrayList<JSONObject> rootObjectMatchHistory;
 	
 	// Scanner for user input
 	private Scanner scanner;
@@ -35,9 +36,11 @@ public class LoLConnector {
 	private DatabaseListener databaseListener;
 
 	public LoLConnector() {
+		// TODO each have own class and subclasses of data
 		rootObjects = new ArrayList<JSONObject>();
 		rootObjectsBannedChampions = new ArrayList<JSONObject>();
 		rootObjectSummoner = new ArrayList<JSONObject>();
+		rootObjectMatchHistory = new ArrayList<JSONObject>();
 		scanner = new Scanner(System.in);
 	}
 
@@ -54,6 +57,8 @@ public class LoLConnector {
 			case 2:
 				generateLiveGameInfo();
 				break;
+			case 3:
+				generateMatchHistory();
 			}
 
 		} catch (MalformedURLException e) {
@@ -65,10 +70,64 @@ public class LoLConnector {
 			e.printStackTrace();
 		}
 	}
+	
+	private void generateMatchHistory() throws JSONException, MalformedURLException, IOException{
+		// Generate the username for parsing to the url and the database name as the user enters it
+		String[] names = parseUsername();
+		System.out.println("Please select the region");
+		regionToCheck = getServerChoice();
+		
+		// Need to grab the summonerId before we can make a call to the API
+		String summonerIdUrl = getUsernameId(names[0], regionToCheck);
+		url = new URL(summonerIdUrl).openStream();
+		generateJson(rootObjects);
+		int summonerId = rootObjects.get(0).getJSONObject(names[0]).getInt("id");
+		
+		// Generate the URL for the API call such as region and the username
+		String rawUrl = "https://"+regionToCheck.getRegion()+".api.pvp.net/api/lol/"+regionToCheck.getRegion()+"/v2.2/matchhistory/"+summonerId+"/?api_key="+JsonFileNames.API_KEY;
+		url = new URL(rawUrl).openStream();
+		generateJson(rootObjectMatchHistory);
+		
+		// Get the first index of the arraylist to get the current search. Separate method for grabbing the data as it will become fairly large
+		grabMatchHistoryData(rootObjectMatchHistory, summonerId, names[1]);
+	}
+	
+	private void grabMatchHistoryData(ArrayList<JSONObject> objectList, int summonerId, String summonerName) throws JSONException{
+		// Limit the for loop to 5, so it will only grab the data for the last 5 games
+		
+		Summoner summoner = new Summoner();
+		JSONArray array = rootObjectMatchHistory.get(0).getJSONArray("matches");
+		for(int i=0; i < array.length(); i++){
+			// Limiting the search to 5 matches. This won't happen if the player has played under 5 matches so it won't crash
+			if(i >= 5){
+				break;
+			}
+			
+			// Grabbing the object inside of the array, so we can get keys via the JSON to store inside our MatchHistory class
+			JSONObject ob = array.getJSONObject(i);
+			/* Get the array of participants and then get the first index as we only want the player info we are searching for. Then grab the stats 
+			 * object.
+			 */
+			
+			MatchHistory history = new MatchHistory(ob.getJSONArray("participants").getJSONObject(0).getJSONObject("stats"));
+		}
+	}
+	
+	private String[] parseUsername(){
+		System.out.println("Please enter summoner name.");
+		String name = scanner.nextLine();
+		String databaseName = name;
+		name = name.toLowerCase().replace(" ", "");
+		
+		return new String[] {name, databaseName};
+		
+	}
 
 	private void generateLiveGameInfo() throws MalformedURLException,
 			IOException, JSONException {
 
+		// TODO Change method to use the new parseUsername method
+		
 		System.out.println("Please enter summoner name.");
 		String name = scanner.nextLine();
 		// Storing the unedited name for storing into the database

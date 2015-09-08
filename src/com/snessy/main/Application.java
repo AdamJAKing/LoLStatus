@@ -11,9 +11,8 @@ public class Application {
 	public static void main(String[] args){
 		
 		LoLConnector client = new LoLConnector();
-		DatabaseHandler handler = new DatabaseHandler();
 		// Setting the database handler for listening to changes
-		client.setDatabaseHandler(handler);
+		client.setDatabaseHandler(new DatabaseHandler());
 		Database.getInstance().connect();
 		
 		Scanner scanner = new Scanner(System.in);
