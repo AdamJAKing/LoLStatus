@@ -31,5 +31,6 @@ LOL-DEVELOPER
 
 JAVA
 1. Create a new Java file inside of com.snessy.lol called LoLConnector. 
-2. Give this file a string constant called API_KEY with the value of your API key public static final String API_KEY = "Yourkeyhere;"
+2. Give this file a string constant called API_KEY with the value of your API key: 
+public static final String API_KEY = "Yourkeyhere;"
 3. Open up Database.Java and change DATABASE_USERNAME/PASS to your settings. If you're using a different port, don't forget to change this as well.
