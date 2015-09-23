@@ -30,7 +30,5 @@ LOL-DEVELOPER
 1. You will need a League of Legends developer account to develop the application. Go to: https://developer.riotgames.com and sign in - navigate to your API key (this is generated when you create your account)
 
 JAVA
-1. Create a new Java file inside of com.snessy.lol called LoLConnector. 
-2. Give this file a string constant called API_KEY with the value of your API key: 
-public static final String API_KEY = "Yourkeyhere;"
-3. Open up Database.Java and change DATABASE_USERNAME/PASS to your settings. If you're using a different port, don't forget to change this as well.
+1. Naviagte to the res folder inside of the project and file named ApiKey.txt. Simply paste your key into this file
+2. Open up Database.Java and change DATABASE_USERNAME/PASS to your settings. If you're using a different port, don't forget to change this as well.
