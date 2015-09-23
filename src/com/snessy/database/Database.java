@@ -8,6 +8,7 @@ public class Database {
 	
 	public static final String DATABASE_USERNAME = "root";
 	public static final String DATABASE_PASS = "password";
+	private static final String DATABASE_PORT = "3306";
 	public static final String DATABASE = "league_of_legends";
 	private static Database instance = new Database();
 	
@@ -33,7 +34,7 @@ public class Database {
 	public void connect(){
 		try {
 			
-			connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/"+DATABASE, DATABASE_USERNAME, DATABASE_PASS);
+			connection = DriverManager.getConnection("jdbc:mysql://localhost:"+DATABASE_PORT+"/"+DATABASE, DATABASE_USERNAME, DATABASE_PASS);
 			
 			System.out.println("Connected to database.");
 		} catch (SQLException e) {

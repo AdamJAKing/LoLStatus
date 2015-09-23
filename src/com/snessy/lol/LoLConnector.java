@@ -45,7 +45,7 @@ public class LoLConnector {
 	}
 
 	public void downloadData(int choice) {
-		
+		System.out.println(JsonFileNames.API_KEY);
 		resetData();
 		
 		try {
@@ -294,8 +294,9 @@ public class LoLConnector {
 			try {
 				JSONObject ob = (JSONObject) root.getJSONArray("services").get(
 						1);
-
-				System.out.println(root.get(JsonFileNames.SERVER_NAME) + ": "
+				
+				// First name is the server, second is the name of the service such as game or forum
+				System.out.println(root.get("name") + ": "
 						+ ob.getString("name") + " " + ob.get("status"));
 
 			} catch (JSONException e) {
