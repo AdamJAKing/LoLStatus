@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Reader;
 
 public class JsonFileNames {
 	
@@ -22,24 +23,18 @@ public class JsonFileNames {
 	public static String readApiKey(){
 		File file = new File("res/ApiKey.txt");
 		String key = null;
-		try {
-			BufferedReader reader = new BufferedReader(new FileReader(file));
-			String value;
+		
+		try(BufferedReader reader = new BufferedReader(new FileReader(file))) {
 			
-			while((value = reader.readLine()) != null ){
-				key = value;
-			}
+			key = reader.readLine();
+			
 			
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not find file containing API key");
 		} catch (IOException e) {
 			System.out.println("Could not read file " + file);
 		}
-		if(key == null){
-			throw new  NullPointerException();
-		}
+		
 		return key;
-		System.out.println();
 	}
-
 }
