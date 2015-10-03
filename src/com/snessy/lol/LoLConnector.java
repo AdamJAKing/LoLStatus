@@ -18,9 +18,6 @@ import com.snessy.lol.Summoner.SummonerEventType;
 
 public class LoLConnector {
 
-	public static final String SERVER_SLUGS[] = {"euw", "na", "eune", "tr",
-			"oce" };
-
 	private InputStream url;
 	private BufferedReader reader;
 	private ServerInformation regionToCheck;
@@ -88,19 +85,19 @@ public class LoLConnector {
 		url = new URL(rawUrl).openStream();
 		generateJson(rootObjectMatchHistory);
 		
-		// Get the first index of the arraylist to get the current search. Separate method for grabbing the data as it will become fairly large
-		grabMatchHistoryData(rootObjectMatchHistory, summonerId, names[1]);
-	}
-	
-	private void grabMatchHistoryData(ArrayList<JSONObject> objectList, int summonerId, String summonerName) throws JSONException{
-		// Limit the for loop to 5, so it will only grab the data for the last 5 games
+		// Get the first index of the arraylist to get the current search. 
 		
 		Summoner summoner = new Summoner();
 		JSONArray array = rootObjectMatchHistory.get(0).getJSONArray("matches");
 		for(int i=0; i < array.length(); i++){
-			// Limiting the search to 5 matches. This won't happen if the player has played under 5 matches so it won't crash
-			if(i >= 5){
-				break;
+			
+			/* This will make it so we skip the first 5 games in the list as they matches are returned in reverse order. Only happens if the array
+			 * has a length less than 5
+			 */
+			
+			// TODO Likely change this to store 10 games and then simply limit it within the display data
+			if(i < 5 && array.length() > 5){
+				continue;
 			}
 			
 			// Grabbing the object inside of the array, so we can get keys via the JSON to store inside our MatchHistory class
@@ -109,10 +106,21 @@ public class LoLConnector {
 			 * object.
 			 */
 			
-			MatchHistory history = new MatchHistory(ob.getJSONArray("participants").getJSONObject(0).getJSONObject("stats"));
+			summoner.addMatch(new MatchHistory(ob.getJSONArray("participants").getJSONObject(0).getJSONObject("stats")));
 		}
+		
+		displayMatchHistory(summoner);
 	}
 	
+	private void displayMatchHistory(Summoner summoner) {
+		if(!summoner.getMatchHistoryList().isEmpty()){
+			int counter=0;
+			for(MatchHistory match : summoner.getMatchHistoryList()){
+			System.out.println("Match " + ++counter+": " + match.toString());
+			}
+		}
+	}
+
 	private String[] parseUsername(){
 		System.out.println("Please enter summoner name.");
 		String name = scanner.nextLine();
@@ -258,8 +266,8 @@ public class LoLConnector {
 			IOException, JSONException {
 		String serverUrl = "http://status.leagueoflegends.com/shards/";
 
-		for (String server : SERVER_SLUGS) {
-			url = new URL(serverUrl + server).openStream();
+		for (ServerInformation server : ServerInformation.values()) {
+			url = new URL(serverUrl + server.getRegion()).openStream();
 			generateJson(rootObjects);
 		}
 	}

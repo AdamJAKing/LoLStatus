@@ -5,7 +5,6 @@ import org.json.JSONObject;
 
 public class MatchHistory {
 	
-	private String queueType;
 	private int pentaKills;
 	private int quadKills;
 	private int tripleKills;
@@ -29,5 +28,14 @@ public class MatchHistory {
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "MatchHistory [pentaKills="
+				+ pentaKills + ", quadKills=" + quadKills + ", tripleKills="
+				+ tripleKills + ", doubleKills=" + doubleKills + ", kills="
+				+ kills + ", deaths=" + deaths + ", assists=" + assists
+				+ ", towerKills=" + towerKills + "]";
 	}
 }

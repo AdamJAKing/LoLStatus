@@ -9,7 +9,7 @@ public enum ServerInformation {
 		
 	private String region;
 	private String regionId;
-	public static final int SIZE = 5;
+	public static final int SIZE = ServerInformation.values().length;
 		
 	ServerInformation(String region, String regionId){
 		this.region = region;

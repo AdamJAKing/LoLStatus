@@ -2,13 +2,29 @@ package com.snessy.main;
 
 import java.util.Scanner;
 
+import javax.swing.JFrame;
+
 import com.snessy.database.Database;
+import com.snessy.gui.MainPanel;
 import com.snessy.handlers.DatabaseHandler;
 import com.snessy.lol.LoLConnector;
 
 public class Application {
 	
+	public static final String TITLE = "LoL stats and live match search";
+	public static final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+	
 	public static void main(String[] args){
+		
+		// TODO Change the application to use GUI rather than console
+		JFrame frame = new JFrame();
+		frame.setVisible(true);
+		frame.setSize(WIDTH, HEIGHT);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setTitle(TITLE);
+		
+		frame.add(new MainPanel());
 		
 		LoLConnector client = new LoLConnector();
 		// Setting the database handler for listening to changes
@@ -33,11 +49,7 @@ public class Application {
 			
 			switch(choice){
 			case 1:
-				client.downloadData(choice);
-				break;
 			case 2:
-				client.downloadData(choice);
-				break;
 			case 3:
 				client.downloadData(choice);
 				break;

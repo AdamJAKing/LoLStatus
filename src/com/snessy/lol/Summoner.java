@@ -53,5 +53,13 @@ public class Summoner {
 	public int getMaxChampionsKills() {
 		return maxChampionKills;
 	}
+
+	public void addMatch(MatchHistory matchHistory) {
+		matches.add(matchHistory);
+	}
+
+	public ArrayList<MatchHistory> getMatchHistoryList() {
+		return matches;
+	}
 	
 }
