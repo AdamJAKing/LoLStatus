@@ -42,7 +42,6 @@ public class LoLConnector {
 	}
 
 	public void downloadData(int choice) {
-		System.out.println(JsonFileNames.API_KEY);
 		resetData();
 		
 		try {

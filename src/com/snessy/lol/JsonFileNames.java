@@ -27,7 +27,6 @@ public class JsonFileNames {
 			
 			key = reader.readLine();
 			
-			
 		} catch (FileNotFoundException e) {
 			System.out.println("Could not find file containing API key");
 		} catch (IOException e) {
@@ -35,8 +34,9 @@ public class JsonFileNames {
 		}
 		
 		if(key == null){
-			throw new  NullPointerException("No API key in file!");
+			throw new  NullPointerException("Check your API key. Is it correct?");
 		}
+		
 		return key;
 	}
 }
