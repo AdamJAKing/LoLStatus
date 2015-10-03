@@ -5,11 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-<<<<<<< HEAD
-=======
-import java.io.InputStream;
-import java.io.Reader;
->>>>>>> d6edf40f85dce7ec4c347572529c4f9aa3f21577
+
 
 public class JsonFileNames {
 	
@@ -38,12 +34,9 @@ public class JsonFileNames {
 			System.out.println("Could not read file " + file);
 		}
 		
-<<<<<<< HEAD
 		if(key == null){
 			throw new  NullPointerException("No API key in file!");
 		}
-=======
->>>>>>> d6edf40f85dce7ec4c347572529c4f9aa3f21577
 		return key;
 	}
 }
