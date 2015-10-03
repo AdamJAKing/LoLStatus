@@ -11,12 +11,17 @@ import com.snessy.lol.LoLConnector;
 
 public class Application {
 	
+<<<<<<< HEAD
 	public static final String TITLE = "LoL stats and live match search";
+=======
+	public static final double VERSION = 1.0;
+>>>>>>> d6edf40f85dce7ec4c347572529c4f9aa3f21577
 	public static final int WIDTH = 800;
 	public static final int HEIGHT = 600;
 	
 	public static void main(String[] args){
 		
+<<<<<<< HEAD
 		// TODO Change the application to use GUI rather than console
 		JFrame frame = new JFrame();
 		frame.setVisible(true);
@@ -25,6 +30,13 @@ public class Application {
 		frame.setTitle(TITLE);
 		
 		frame.add(new MainPanel());
+=======
+		JFrame applicationFrame = new JFrame();
+		applicationFrame.setVisible(true);
+		applicationFrame.setTitle("LoLStatus " + VERSION);
+		applicationFrame.setSize(WIDTH, HEIGHT);
+		applicationFrame.add(new MainPanel());
+>>>>>>> d6edf40f85dce7ec4c347572529c4f9aa3f21577
 		
 		LoLConnector client = new LoLConnector();
 		// Setting the database handler for listening to changes
